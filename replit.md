@@ -152,12 +152,53 @@ None specified yet.
 
 ## Recent Changes
 
+- **2024-11-22**: Configured for Replit environment
+  - Installed all Python dependencies via uv from pyproject.toml
+  - Installed Node.js dependencies from package.json
+  - Fixed Next.js configuration for Replit proxy (removed invalid config, added -H 0.0.0.0)
+  - Updated backend config to use Replit DATABASE_URL and allow all CORS origins
+  - Fixed SQLAlchemy deprecation warning with text() wrapper
+  - Configured workflows: Backend API (localhost:8000), Frontend (0.0.0.0:5000)
+  - Set up GROQ_API_KEY environment variable
+  - Configured autoscale deployment with proper port mapping
 - Initial project setup (2024-11-22)
 - Implemented all core features
 - Added comprehensive tests
 - Created Docker configuration
 - Written complete documentation
 - Fixed frontend-backend integration with Next.js rewrites
+
+## Replit-Specific Configuration
+
+### Environment Setup
+- Python packages managed with `uv` (virtual environment in `.pythonlibs`)
+- Node.js packages managed with `npm`
+- Database: PostgreSQL provided by Replit (DATABASE_URL auto-configured)
+- GROQ_API_KEY stored in environment variables
+
+### Workflows (Development)
+1. **Backend API**: Runs on 0.0.0.0:8000
+   - Command: `cd backend && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000`
+   - Uses uv to activate virtual environment automatically
+   - Port 8000 is internal (not publicly exposed, accessed via frontend proxy)
+
+2. **Frontend**: Runs on 0.0.0.0:5000 (publicly exposed via webview)
+   - Command: `cd frontend && npm run dev`
+   - Binds to 0.0.0.0 to work with Replit's iframe proxy
+   - Proxies API requests to backend on port 8000 via Next.js rewrites
+
+### Deployment (Production)
+- Type: Autoscale (stateless, scales on demand)
+- Build: `cd frontend && npm run build`
+- Run: Both services start together:
+  - Backend: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
+  - Frontend: `next start -H 0.0.0.0 -p 5000`
+- Frontend proxies API requests to backend via Next.js rewrites
+- Only port 5000 is publicly exposed externally (port 8000 remains internal)
+
+### CORS Configuration
+- Backend allows all origins (`["*"]`) for development
+- This is necessary for Replit's proxy infrastructure
 
 ## Known Issues
 
