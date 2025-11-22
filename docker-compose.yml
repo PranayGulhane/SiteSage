@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:14-alpine
+    container_name: sitesage-db
+    environment:
+      POSTGRES_USER: sitesage
+      POSTGRES_PASSWORD: sitesage_password
+      POSTGRES_DB: sitesage
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sitesage"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sitesage-backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    working_dir: /app/backend
+    environment:
+      DATABASE_URL: postgresql://sitesage:sitesage_password@database:5432/sitesage
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      DEBUG: "True"
+    volumes:
+      - ./backend:/app/backend
+      - ./reports:/app/reports
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Frontend Dashboard
+  frontend:
+    image: node:20-alpine
+    container_name: sitesage-frontend
+    command: sh -c "npm install && npm run dev"
+    working_dir: /app/frontend
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://backend:8000
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: sitesage-network

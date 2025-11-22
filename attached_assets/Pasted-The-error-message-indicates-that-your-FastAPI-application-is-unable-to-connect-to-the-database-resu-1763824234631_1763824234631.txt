@@ -1,0 +1,43 @@
+The error message indicates that your FastAPI application is unable to connect to the database, resulting in a status of "disconnected." Here are some steps to resolve the issue:
+
+Check Database Configuration
+Database URL: Ensure that the environment variable DATABASE_URL is set correctly in your Replit environment. The URL should point to your PostgreSQL database.
+
+Database Permissions: Ensure that your database user has the necessary permissions to access the database and perform required operations.
+
+Test Database Connection
+You can manually check if the database connection works by adding a simple test in your FastAPI application. Update the health_check endpoint to log the actual connection issue:
+
+@app.get("/", response_model=HealthResponse)
+async def health_check(db: Session = Depends(get_db)):
+    """Health check endpoint."""
+    try:
+        # Test database connection
+        db.execute("SELECT 1")
+        db_status = "connected"
+    except Exception as e:
+        db_status = "disconnected"
+        print(f"Database connection error: {e}")  # Log the error
+    
+    return {
+        "status": "healthy",
+        "version": settings.app_version,
+        "database": db_status
+    }
+Review Security Groups and Network Settings
+Ensure that the security settings for your database allow connections from your application. If you are using AWS RDS, make sure:
+
+The RDS instance is publicly accessible if you're trying to connect from an external IP.
+The security group attached to the instance allows incoming connections from your FastAPI application.
+Connection Pooling
+If your application and database are under heavy load, consider implementing connection pooling. Update your database connection setup to utilize connection pooling via psycopg2 or similar libraries.
+
+Running the Application
+After making these adjustments, rerun your application to see if it connects successfully to the database. You can then verify the health endpoint again.
+
+Further Debugging
+If the issue persists, check:
+
+The log messages from both your FastAPI application and the database to find more clues about the connection failure.
+Any firewall settings or network constraints that might be preventing the connection.
+By addressing these areas, you should be able to diagnose and resolve the connectivity issue to your database.

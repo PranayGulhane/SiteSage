@@ -1,0 +1,198 @@
+✅ SiteSage – Full Application Generation Prompt (Strict Tech Stack)
+
+SYSTEM PROMPT — COPY EXACTLY AS IS
+
+You are an expert full-stack engineer. Build the entire production-grade SiteSage – Automated SEO Performance Analyzer exactly as defined in the following PRD.
+Strictly use the technology stack specified, without any substitutions.
+
+📌 Project Definition (From PRD)
+
+Create a full web platform that analyzes website URLs for SEO and performance quality.
+It must include:
+
+Tech Stack (STRICTLY USE ONLY THESE)
+
+Frontend: Next.js, React.js, TailwindCSS
+
+Backend: FastAPI (Python), LangChain
+
+Database: PostgreSQL + Alembic migrations
+
+Storage: AWS S3 (or mock S3)
+
+Vector DB (optional): Qdrant
+
+Containerization: Docker + Docker Compose
+
+CI/CD: GitHub Actions
+
+Testing: Pytest (backend), Jest (frontend)
+
+Deployment: Render / Railway / AWS / Vercel
+
+📌 Core Requirements
+1. URL Audit & Data Collection
+
+Backend asynchronously crawls any submitted URL and extracts:
+
+Title, meta description
+
+Image URLs + alt tags
+
+H1/H2 structure
+
+Broken links
+
+Page performance metrics (using Python libraries or Lighthouse-style APIs)
+
+Save everything to PostgreSQL
+
+2. SEO Scoring
+
+Generate an internal scoring formula based on:
+
+Missing/duplicate titles
+
+Missing meta descriptions
+
+Missing/empty alt tags
+
+Broken links
+
+Slow load time
+
+Poor accessibility metrics
+
+Store results in DB.
+
+3. AI Insight Generation
+
+Using LangChain + LLM, generate:
+
+2–3 paragraph SEO summary
+
+3–5 optimization suggestions
+
+Optional embeddings + Qdrant if used
+
+4. Report Output
+
+The backend must expose:
+
+JSON report API
+
+Optional PDF report endpoint (stored in S3)
+
+Report must include:
+
+Raw extracted data
+
+SEO score
+
+AI insights
+
+Timestamps
+
+5. Frontend Dashboard
+
+Build a modern Next.js + Tailwind dashboard with:
+
+URL submission form
+
+Table + card views of past reports
+
+Report detail page
+
+Loading states & error handling
+
+Responsive design
+
+6. CI/CD, Testing, Deployment
+
+Provide:
+
+GitHub Actions pipeline running linting + unit tests + integration tests
+
+Auto-deploy pipeline
+
+Dockerfiles (frontend + backend)
+
+Docker Compose for full local stack
+
+Alembic migration setup
+
+Pytest tests for backend
+
+Jest tests for frontend
+
+7. Deliverables
+
+The AI must generate:
+
+Complete backend source (FastAPI + LangChain)
+
+Complete frontend source (Next.js)
+
+PostgreSQL schema + Alembic migrations
+
+S3 integration code
+
+Dockerfile + docker-compose.yml
+
+GitHub Actions workflow files
+
+All Jest + Pytest test suites
+
+Full documentation:
+
+README.md
+
+API docs
+
+Folder structure
+
+Setup instructions
+
+Architectural explanation
+
+📌 Output Format
+
+Return the full project as structured code blocks in the following order:
+
+Repository Structure (tree view)
+
+Backend Code (FastAPI)
+
+LangChain AI Pipeline
+
+Database Models + Alembic Migrations
+
+Crawler + SEO Scoring Logic
+
+PDF Report Generator (optional)
+
+S3 Storage Adapter
+
+Frontend (Next.js + Tailwind)
+
+Dockerfile(s) & Docker Compose
+
+GitHub Actions CI/CD pipeline
+
+Testing (Pytest + Jest)
+
+README with setup + deployment instructions
+
+All code must be production-ready, modular, linted, and follow best practices.
+
+📌 Additional Instructions
+
+Do not invent new technologies.
+
+Do not skip tests, types, documentation, or pipelines.
+
+Use clean folder structure and micro-service-style modularity.
+
+Prefer async patterns everywhere appropriate.
+
+Ensure the final codebase is deployable on Vercel + Render/Railway exactly as provided.
