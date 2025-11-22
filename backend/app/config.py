@@ -9,17 +9,11 @@ class Settings(BaseSettings):
 
     # Database
     database_url: str = Field(
-        default_factory=lambda: os.getenv(
-            "DATABASE_URL", 
-            os.getenv(
-                "DATABASE_URL",
-                "postgresql://neondb_owner:npg_ZPzfCTGgrR76@ep-icy-truth-afcxozd7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require"
-            )
-        )
+        default=os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/sitesage")
     )
 
     # Groq AI
-    groq_api_key: str = os.getenv("GROQ_API_KEY", "")
+    groq_api_key: str = Field(default=os.getenv("GROQ_API_KEY", ""))
     groq_model: str = "llama-3.3-70b-versatile"
 
     # Application
@@ -27,8 +21,8 @@ class Settings(BaseSettings):
     app_version: str = "1.0.0"
     debug: bool = False
 
-    # CORS
-    cors_origins: list = ["http://localhost:5000", "http://127.0.0.1:5000"]
+    # CORS - Allow all origins in development
+    cors_origins: list = ["*"]
 
     # Reports
     reports_dir: str = "reports"

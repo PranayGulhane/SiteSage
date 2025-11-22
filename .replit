@@ -4,3 +4,8 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+GROQ_API_KEY = "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"
