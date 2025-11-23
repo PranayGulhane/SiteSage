@@ -31,6 +31,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+ENV DATABASE_URL="postgresql://neondb_owner:npg_rghcyiaub7Q1@ep-sparkling-pond-adzuvpbp-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+ENV GROQ_API_KEY="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"
+
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     postgresql-client \
