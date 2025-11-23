@@ -60,6 +60,7 @@ jobs:
 
     - name: Lint Backend Code
       run: |
+        pip install pylint
         cd backend
         pylint app
 
