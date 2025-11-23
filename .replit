@@ -10,6 +10,9 @@ channel = "stable-25_05"
 [userenv.shared]
 GROQ_API_KEY = "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"
 
+[userenv.development]
+NEXT_PUBLIC_API_URL = "http://localhost:8000"
+
 [workflows]
 runButton = "Project"
 
@@ -57,6 +60,10 @@ externalPort = 80
 [[ports]]
 localPort = 8000
 externalPort = 8000
+
+[[ports]]
+localPort = 43311
+externalPort = 3000
 
 [deployment]
 deploymentTarget = "autoscale"
