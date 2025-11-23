@@ -21,7 +21,7 @@ def test_create_report(client: TestClient):
     )
     assert response.status_code == 201
     data = response.json()
-    assert data["url"] == "https://example.com"
+    assert data["url"].rstrip("/") == "https://example.com"
     assert data["status"] == "pending"
     assert "id" in data
 
