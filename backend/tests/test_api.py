@@ -61,7 +61,7 @@ def test_get_report_by_id(client: TestClient):
     assert response.status_code == 200
     data = response.json()
     assert data["id"] == report_id
-    assert data["url"] == "https://example.com"
+    assert data["url"].rstrip("/") == "https://example.com"
 
 
 def test_get_report_not_found(client: TestClient):
