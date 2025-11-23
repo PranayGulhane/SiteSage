@@ -1,0 +1,87 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: sitesage
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install Frontend Dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Lint Frontend Code
+      run: |
+        cd frontend
+        npm run lint
+
+    - name: Run Frontend Tests
+      run: |
+        cd frontend
+        npm test
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install Backend Dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
+
+    - name: Lint Backend Code
+      run: |
+        cd backend
+        pylint app
+
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        pytest
+
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm run build
+
+    - name: Deploy to Replit
+      run: |
+        echo "Deploying to Replit..."
+        # Add your specific deployment commands here if needed
+        
+        # Example deployment command to start frontend
+        # Uncomment and replace the environmentally safe command if applicable
+        # cd frontend && npm run start
+
+        # Example command to deploy backend
+        # Uncomment and replace the environmentally safe command if applicable
+        # cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000 &
