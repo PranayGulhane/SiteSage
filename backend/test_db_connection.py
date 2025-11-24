@@ -10,7 +10,6 @@ def test_connection():
     
     if not database_url:
         print("ERROR: DATABASE_URL environment variable is not set!")
-        print("Please set it in Replit Secrets or .env file")
         return False
     
     print(f"Testing connection to: {database_url.split('@')[1] if '@' in database_url else 'database'}")
